@@ -4,6 +4,7 @@ import { useParams } from "next/navigation"
 import { useGetColumnsBySubscription, useCreateColumnMutation, useUpdateCardPositionMutation } from "@/_generated_/graphql"
 import { useState } from "react"
 import { DragDropContext, DropResult } from "@hello-pangea/dnd"
+import SignOutButton from "@/components/SignOut"
 
 import Column from "@/components/Columns"
 
@@ -86,6 +87,9 @@ const BoardPage = () => {
     
     return (
         <div className="p-6 space-y-6">
+
+            <SignOutButton />
+
             <h1 className="text-2x1 font-semibold">
                 Columns for board: {boardId}
             </h1>
