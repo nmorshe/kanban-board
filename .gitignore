@@ -1,0 +1,7 @@
+.nhost
+.secrets
+.env*
+.env.local
+node_modules/
+.pnpm/
+.next
