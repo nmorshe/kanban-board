@@ -2,7 +2,21 @@
 
 import Link from "next/link"
 
-const Board = ({board, idFunction, nameFunction}) => {
+interface boardVars {
+    _typename?: "boards" | undefined,
+    id: string,
+    name: string,
+    created_at: string,
+    updated_at: string,
+}
+
+interface propTypes {
+    board: boardVars,
+    idFunction: React.Dispatch<React.SetStateAction<string | null>>,
+    nameFunction: React.Dispatch<React.SetStateAction<string>>
+}
+
+const Board = ({board, idFunction, nameFunction}: propTypes) => {
     return (
         <Link key={board.id} href={`/boards/${board.id}`}>
             <div className="flex justify-between items-center">

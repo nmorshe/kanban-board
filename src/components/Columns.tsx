@@ -9,7 +9,30 @@ import EditColumn from "./EditColumn"
 import ColumnVal from "./ColumnVal"
 import CardItem from "./CardItem"
 
-const Column = ({column}) => {
+interface columnAttr {
+    __typename?: "columns";
+    id: string;
+    title: string;
+    position: number;
+    board_id: string;
+}
+
+interface cardAttr {
+    __typename?: "cards";
+    id: string;
+    title: string;
+    description?: string | null | undefined;
+    position: number;
+    column_id: string;
+}
+
+interface col {
+    column: columnAttr
+}
+
+
+
+const Column = ({column}: col) => {
 
     const [isEditing, setIsEditing] = useState(false)
     const [title, setTitle] = useState(column.title)
@@ -17,7 +40,7 @@ const Column = ({column}) => {
     const [updateColumn] = useUpdateColumnMutation()
     const [deleteColumn] = useDeleteColumnMutation()
     
-    const handleSave = async(column) => {
+    const handleSave = async(column: columnAttr) => {
         await updateColumn({
             variables: {
                 id: column.id,
@@ -31,7 +54,7 @@ const Column = ({column}) => {
         
     }
 
-    const handleDelete = async(column) => {
+    const handleDelete = async(column: columnAttr) => {
         const confirmed = window.confirm('Deleting this column. Are you sure?')
 
         if (!confirmed) {
@@ -44,7 +67,7 @@ const Column = ({column}) => {
         })
     }
 
-    const renderListItem = (elem, index) => {
+    const renderListItem = (elem: cardAttr, index: number) => {
 
         return (
 

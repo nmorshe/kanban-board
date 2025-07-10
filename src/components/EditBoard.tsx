@@ -1,13 +1,20 @@
 'use client'
 
-const EditBoard = ({editName, handleSave, idFunction, nameFunction}) => {
+interface propTypes {
+    editName: string,
+    handleSave: () => Promise<void>,
+    idFunction: React.Dispatch<React.SetStateAction<string | null>>,
+    nameFunction: React.Dispatch<React.SetStateAction<string>>
+}
+
+const EditBoard = ({editName, handleSave, idFunction, nameFunction}: propTypes) => {
     
     const saveData = () => {
         handleSave()
     }
 
-    const changeName = (e) =>{
-        nameFunction(e.target.value)
+    const changeName = (val: string) =>{
+        nameFunction(val)
     }
 
     const resetId = () => {
@@ -19,7 +26,7 @@ const EditBoard = ({editName, handleSave, idFunction, nameFunction}) => {
             <input
                 type="text"
                 value={editName}
-                onChange={changeName}
+                onChange={(e) => changeName(e.target.value)}
                 className="border px-2 py-1 rounded mr-2"
             />
 

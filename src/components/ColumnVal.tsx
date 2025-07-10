@@ -1,6 +1,31 @@
 'use client'
 
-const ColumnVal = ({columnVal, deleteFunction, editFunction}) => {
+import { SetStateAction, Dispatch } from "react";
+
+interface columnAttr {
+    __typename?: "columns";
+    id: string;
+    title: string;
+    position: number;
+    board_id: string;
+}
+
+interface propTypes {
+    columnVal: {
+        __typename?: "columns";
+        id: string;
+        title: string;
+        position: number;
+        board_id: string;
+    },
+
+    deleteFunction: (column: columnAttr) => Promise<void>,
+
+    editFunction: Dispatch<SetStateAction<boolean>>
+
+}
+
+const ColumnVal = ({columnVal, deleteFunction, editFunction} : propTypes) => {
 
     const toggleEdit = () => {
         editFunction(true)

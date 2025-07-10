@@ -1,19 +1,50 @@
 'use client'
 
-import { useState } from "react"
+import { useState, Dispatch, SetStateAction } from "react"
 import { useUpdateCardMutation, useDeleteCardMutation } from "@/_generated_/graphql"
+import { DraggableProvided } from "@hello-pangea/dnd"
 
-const EditCard = ({card, titleVal, descVal, saveFunc, titleFunc, descFunc, editFunc}) => {
+interface cardAttr {
+    __typename?: "cards";
+    id: string;
+    title: string;
+    description?: string | null | undefined;
+    position: number;
+    column_id: string;
+}
+
+interface EditCardProps {
+    card: cardAttr,
+    titleVal: string,
+    descVal?: string | null | undefined,
+    saveFunc: (card: cardAttr) => Promise<void>,
+    descFunc: Dispatch<SetStateAction<string>>,
+    titleFunc: Dispatch<SetStateAction<string>>,
+    editFunc: Dispatch<SetStateAction<boolean>>
+}
+
+interface CardItemProps {
+    card: cardAttr,
+    provided: DraggableProvided
+}
+
+interface CardDataProps {
+    card: cardAttr,
+    editFunc: Dispatch<SetStateAction<boolean>>,
+    deleteFunc: (card: cardAttr) => Promise<void>
+}
+
+const EditCard = ({card, titleVal, descVal, saveFunc, titleFunc, descFunc, editFunc}: EditCardProps) => {
 
     const saveData = () => {
         saveFunc(card)
     }
 
-    const editTitle = (newTitle) => {
+    const editTitle = (newTitle: string) => {
         titleFunc(newTitle)
     }
 
-    const editDesc = (newDesc) => {
+    const editDesc = (newDesc: string) => {
         descFunc(newDesc)
     }
 
@@ -30,7 +61,7 @@ const EditCard = ({card, titleVal, descVal, saveFunc, titleFunc, descFunc, editF
             />
             <textarea 
                 className="mb-2 border px-2 py-1 w-full"
-                value={descVal}
+                value={descVal ?? ""}
                 onChange={(e) => editDesc(e.target.value)}
             />
 
@@ -53,7 +84,7 @@ const EditCard = ({card, titleVal, descVal, saveFunc, titleFunc, descFunc, editF
 
 }
 
-const CardData = ({card, editFunc, deleteFunc}) => {
+const CardData = ({card, editFunc, deleteFunc} : CardDataProps) => {
 
     const toggleEdit = () => {
         editFunc(true)
@@ -85,15 +116,15 @@ const CardData = ({card, editFunc, deleteFunc}) => {
     )
 }
 
-const CardItem = ({card, provided}) => {
+const CardItem = ({card, provided}: CardItemProps) => {
     const [isEditing, setIsEditing] = useState(false)
     const [title, setTitle] = useState(card.title)
-    const [description, setDescription] = useState(card.description)
+    const [description, setDescription] = useState(card.description ?? "")
 
     const [updateCard] = useUpdateCardMutation()
     const [deleteCard] = useDeleteCardMutation()
 
-    const handleSave = async(card) => {
+    const handleSave = async(card: cardAttr) => {
         await updateCard({
             variables: {
                 id: card.id,
@@ -109,7 +140,7 @@ const CardItem = ({card, provided}) => {
         setIsEditing(false)
     }
 
-    const handleDelete = async(card) => {
+    const handleDelete = async(card: cardAttr) => {
         
         const confirmDelete = window.confirm("Delete this card?")
         

@@ -1,6 +1,6 @@
 'use client'
 
-import { useGetBoardsQuery, useCreateBoardMutation, useUpdateBoardMutation, useDeleteBoardMutation } from "@/_generated_/graphql";
+import { useGetBoardsQuery, useCreateBoardMutation, useUpdateBoardMutation, useDeleteBoardMutation, } from "@/_generated_/graphql";
 import { useUserData } from "@nhost/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -88,7 +88,15 @@ const BoardsList = () => {
         refetch()
     }
 
-    const renderListItem = (board) => {
+    interface boardVars {
+        _typename?: "boards" | undefined,
+        id: string,
+        name: string,
+        created_at: string,
+        updated_at: string,
+    }
+
+    const renderListItem = (board: boardVars) => {
 
         const isEditing = editingBoardId === board.id
 
@@ -149,7 +157,7 @@ const BoardsList = () => {
             </form>
 
             <ul className="mt-4 space-y-2">
-                {data?.boards.map(board => renderListItem(board))}
+                {data?.boards.map((board) => renderListItem(board))}
             </ul>
         </div>
     )

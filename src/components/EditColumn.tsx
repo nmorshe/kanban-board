@@ -1,12 +1,30 @@
 'use client'
 
-const EditColumn = ({columnVal, mainTitle, updateTitle, saveFunction, editFunction}) => {
+import { Dispatch, SetStateAction } from "react";
+
+interface columnAttr {
+    __typename?: "columns";
+    id: string;
+    title: string;
+    position: number;
+    board_id: string;
+}
+
+interface propTypes {
+    columnVal: columnAttr,
+    mainTitle: string,
+    updateTitle: Dispatch<SetStateAction<string>>,
+    saveFunction: (column: columnAttr) => Promise<void>,
+    editFunction: Dispatch<SetStateAction<boolean>>
+}
+
+const EditColumn = ({columnVal, mainTitle, updateTitle, saveFunction, editFunction} : propTypes) => {
 
     const saveData = () => {
         saveFunction(columnVal)
     }
 
-    const changeTitle = (newTitle) => {
+    const changeTitle = (newTitle: string) => {
         updateTitle(newTitle)
     }
 

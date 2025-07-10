@@ -8,11 +8,11 @@ import { PasswordReset } from './password-reset';
 import { SignInPasswordless } from './signin-passwordless';
 import { SignInOTP } from './signin-otp';
 
-function renderEmails(targetLocale: string) {
+async function renderEmails(targetLocale: string) {
   const emails = [
     {
       name: 'email-confirm-change',
-      body: prettier.format(render(EmailConfirmChange()), {
+      body: prettier.format(await render(EmailConfirmChange()), {
         parser: 'html',
         printWidth: 500,
       }),
@@ -20,7 +20,7 @@ function renderEmails(targetLocale: string) {
     },
     {
       name: 'email-verify',
-      body: prettier.format(render(EmailVerify()), {
+      body: prettier.format(await render(EmailVerify()), {
         parser: 'html',
         printWidth: 500,
       }),
@@ -28,7 +28,7 @@ function renderEmails(targetLocale: string) {
     },
     {
       name: 'password-reset',
-      body: prettier.format(render(PasswordReset()), {
+      body: prettier.format(await render(PasswordReset()), {
         parser: 'html',
         printWidth: 500,
       }),
@@ -36,7 +36,7 @@ function renderEmails(targetLocale: string) {
     },
     {
       name: 'signin-passwordless',
-      body: prettier.format(render(SignInPasswordless()), {
+      body: prettier.format(await render(SignInPasswordless()), {
         parser: 'html',
         printWidth: 500,
       }),
@@ -44,7 +44,7 @@ function renderEmails(targetLocale: string) {
     },
     {
       name: 'signin-otp',
-      body: prettier.format(render(SignInOTP()), {
+      body: prettier.format(await render(SignInOTP()), {
         parser: 'html',
         printWidth: 500,
       }),
@@ -58,12 +58,12 @@ function renderEmails(targetLocale: string) {
     fs.mkdirSync(targetFolder);
   }
 
-  emails.forEach((email) => {
+  emails.forEach( async(email) => {
     if (!fs.existsSync(`${targetFolder}/${email.name}`)) {
       fs.mkdirSync(`${targetFolder}/${email.name}`, { recursive: true });
     }
 
-    fs.writeFileSync(`${targetFolder}/${email.name}/body.html`, email.body);
+    fs.writeFileSync(`${targetFolder}/${email.name}/body.html`, await email.body);
     fs.writeFileSync(
       `${targetFolder}/${email.name}/subject.txt`,
       email.subject
