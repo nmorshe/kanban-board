@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from "react"
 import { useSignInEmailPassword, useSignUpEmailPassword, useUserId } from "@nhost/react"
 import { useRouter } from 'next/navigation'
-import { useApolloClient } from '@apollo/client'
-import signOutUser from "@/lib/signout"
 
 const AuthPage = () => {
     const [isRegistering, setIsRegistering] = useState(false)
@@ -15,7 +13,6 @@ const AuthPage = () => {
     const {signUpEmailPassword, isLoading: isRegisteringLoading, error: registerError} = useSignUpEmailPassword()
 
     const router = useRouter()
-    const client = useApolloClient()
     const userId = useUserId()
 
     const handleSubmit = async (e: React.FormEvent) => {

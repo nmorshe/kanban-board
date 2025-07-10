@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation"
 import { useApolloClient } from "@apollo/client"
 import { Button } from "./ui/button"
 import signOutUser from "@/lib/signout"
-import nhost from "@/lib/nhost"
 
 const SignOutButton = () => {
     const router = useRouter()
